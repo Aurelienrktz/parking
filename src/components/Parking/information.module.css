@@ -1,0 +1,57 @@
+.container,.container2{
+    width: 90%;
+    padding: 20px;
+    background-color: #fff;
+    z-index: 90;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 20px;
+
+    transition: .5s ease-in-out;
+}
+.container h2{
+    align-self: start;
+}
+.container h2 span{
+    font-weight: 400;
+}
+.container button{
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0px 0px 10px rgb(105, 105, 105);
+    transition: .3s ease-in-out;
+}
+.container button:hover{
+    transform: translateY(-5px);
+    background-color: #D9D9D9;
+}
+.container2{
+    color: white;
+    background-color: #6F8BE9;
+}
+.container2 label,.container2 input{
+    align-self: start;
+}
+.container2 input{
+    width: 80%;
+    height: 25px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+.container2 button{
+    padding: 5px;
+    border-radius: 5px;
+}
+.container2 h1{
+    text-align: center;
+}
+
+@media (min-width:768px) {
+    .container,.container2{
+        width: 50%;
+    }
+}

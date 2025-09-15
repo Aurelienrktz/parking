@@ -1,0 +1,25 @@
+.container{
+    position: relative;
+}
+.container>*:not(.illustration) {
+    position: relative;
+    z-index: 1;
+    /* tes autres éléments au-dessus */
+}
+.illustration{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    right: 10px;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+
+/* MEDIA */
+@media (min-width:768px) {
+    .illustration{
+        width: 50%;
+        height: auto;
+    }
+}
