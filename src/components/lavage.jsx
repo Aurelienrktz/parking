@@ -1,0 +1,158 @@
+import React, { useState, useContext, useEffect } from "react";
+import { AfficherBar, VoituresContexte } from "../MyContexte";
+import Information from "./Parking/information";
+import Formulaire from "./Parking/formulaire";
+import s from "./styles/parking.module.css";
+
+const Lavage = ({ AjouterVoiture, voitures }) => {
+  const [lavage, setLavage] = useState([
+    {
+      num: 1,
+      voiture: "",
+      proprietaire: "",
+    },
+    {
+      num: 2,
+      voiture: "",
+      proprietaire: "",
+    },
+    {
+      num: 3,
+      voiture: "",
+      proprietaire: "",
+    },
+    {
+      num: 4,
+      voiture: "",
+      proprietaire: "",
+    },
+    {
+      num: 5,
+      voiture: "",
+      proprietaire: "",
+    },
+    {
+      num: 6,
+      voiture: "",
+      proprietaire: "",
+    },
+  ]);
+
+  function Liberer(id) {
+    setLavage((prev) => {
+      const nouveau = prev.map((value) => {
+        return value.num === id
+          ? { ...value, voiture: "", proprietaire: "" }
+          : value;
+      });
+      return nouveau;
+    });
+  }
+
+  const [voitureAff, setVoitureAff] = useState({
+    num: 0,
+    proprietaire: "",
+    voiture: "",
+  });
+  const [ind, setInd] = useState(0);
+  const [info, setInfo] = useState(false);
+  const [form, setForm] = useState(false);
+
+  function AfficheInfo(num, nom, prop) {
+    if (!info) {
+      setInfo(true);
+    }
+    if (form) {
+      setForm(false);
+    }
+    setVoitureAff({
+      num: num,
+      proprietaire: prop,
+      voiture: nom,
+    });
+  }
+  function Afficheform(indX) {
+    if (!form) {
+      setForm(true);
+    }
+    if (info) {
+      setInfo(false);
+    }
+    setInd(indX);
+  }
+
+  useEffect(() => {
+    handleParking();
+  }, [voitures]); // ajouter parking si nécessaire pour la comparaison
+
+  function handleParking() {
+    const ListeParking = voitures.filter(
+      (value) => value.service === "Lavage" && value.statut === "en cours"
+    );
+    const newParking = lavage.map((p) => {
+      const voitureOccupee = ListeParking.find((v) => v.numLavage === p.num);
+      return {
+        ...p,
+        voiture: voitureOccupee ? voitureOccupee.plaque : "",
+        proprietaire: voitureOccupee ? voitureOccupee.proprietaire : "",
+      };
+    });
+
+    // Vérifie si le tableau a réellement changé
+
+    const isEqual = newParking.every((p, i) => p.voiture === lavage[i].voiture);
+
+    if (!isEqual) {
+      setLavage(newParking);
+    }
+  }
+
+  return (
+    <div className={s.container}>
+      <img src="/image/Car wash-bro.png" alt="" />
+      <h1>Gestion de Lavage</h1>
+      <div className={s.parkinC}>
+        {lavage.map((value, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                backgroundColor: value.voiture === "" ? "#25ff37" : "#ff2525",
+              }}
+            >
+              <h1>N°{value.num}</h1>
+              <h6>{value.voiture === "" ? "Vide" : value.voiture}</h6>
+              <button
+                onClick={() => Afficheform(value.num)}
+                style={{ display: value.voiture !== "" ? "none" : "block" }}
+              >
+                Ajouter
+              </button>
+              <button
+                onClick={() =>
+                  AfficheInfo(value.num, value.voiture, value.proprietaire)
+                }
+                style={{ display: value.voiture !== "" ? "block" : "none" }}
+              >
+                Voir
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      {info === true && (
+        <Information voitureAff={voitureAff} Liberer={Liberer} />
+      )}
+      {form === true && (
+        <Formulaire
+          parking={lavage}
+          voitures={voitures}
+          numero={ind}
+          AjouterVoiture={AjouterVoiture}
+        />
+      )}
+    </div>
+  );
+};
+
+export default Lavage;

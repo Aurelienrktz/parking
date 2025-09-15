@@ -1,14 +1,14 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/header";
 import Dashboard from "./components/Dashboard";
 import Parking from "./components/parking";
-import { VoituresContexte, AfficherBar } from "./MyContexte"
-import "./App.css"
+import Lavage from "./components/lavage";
+import { VoituresContexte, AfficherBar } from "./MyContexte";
+import "./App.css";
 
 export function App() {
-
-  const [voitures,setVoitures]=useState([
+  const [voitures, setVoitures] = useState([
     {
       id: 1,
       plaque: "MAT-4527-AB",
@@ -17,7 +17,7 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numPark: 1,
-      proprietaire: "Andry Rakoto"
+      proprietaire: "Andry Rakoto",
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ export function App() {
       dateSortie: "2025-09-11 10:15",
       statut: "terminé",
       numLavage: 0,
-      proprietaire: "Liva Raso"
+      proprietaire: "Liva Raso",
     },
     {
       id: 3,
@@ -37,7 +37,7 @@ export function App() {
       dateSortie: "2025-09-10 07:50",
       statut: "terminé",
       numPark: 0,
-      proprietaire: "Hery Andrianina"
+      proprietaire: "Hery Andrianina",
     },
     {
       id: 4,
@@ -47,7 +47,7 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numPark: 5,
-      proprietaire: "Mamy Raharison"
+      proprietaire: "Mamy Raharison",
     },
     {
       id: 5,
@@ -57,7 +57,7 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numLavage: 3,
-      proprietaire: "Riana Rakotobe"
+      proprietaire: "Riana Rakotobe",
     },
     {
       id: 6,
@@ -67,7 +67,7 @@ export function App() {
       dateSortie: "2025-09-09 08:00",
       statut: "terminé",
       numPark: 0,
-      proprietaire: "Tsiry Randrianarisoa"
+      proprietaire: "Tsiry Randrianarisoa",
     },
     {
       id: 7,
@@ -75,9 +75,9 @@ export function App() {
       service: "Lavage",
       dateEntree: "2025-09-10 15:40",
       dateSortie: "2025-09-10 16:20",
-      statut: "terminé",
-      numLavage: 0,
-      proprietaire: "Faniry Rahantanirina"
+      statut: "en cours",
+      numLavage: 5,
+      proprietaire: "Faniry Rahantanirina",
     },
     {
       id: 8,
@@ -87,7 +87,7 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numPark: 6,
-      proprietaire: "Nirina Rasoanaivo"
+      proprietaire: "Nirina Rasoanaivo",
     },
     {
       id: 9,
@@ -97,7 +97,7 @@ export function App() {
       dateSortie: "2025-09-08 07:30",
       statut: "terminé",
       numPark: 0,
-      proprietaire: "Zo Rakotomalala"
+      proprietaire: "Zo Rakotomalala",
     },
     {
       id: 10,
@@ -107,7 +107,7 @@ export function App() {
       dateSortie: "2025-09-11 09:25",
       statut: "terminé",
       numLavage: 0,
-      proprietaire: "Tojo Andriamihaja"
+      proprietaire: "Tojo Andriamihaja",
     },
     {
       id: 11,
@@ -117,7 +117,7 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numPark: 7,
-      proprietaire: "Joel Rakotoniaina"
+      proprietaire: "Joel Rakotoniaina",
     },
     {
       id: 12,
@@ -127,7 +127,7 @@ export function App() {
       dateSortie: "2025-09-10 08:10",
       statut: "terminé",
       numPark: 0,
-      proprietaire: "Aina Ravelonirina"
+      proprietaire: "Aina Ravelonirina",
     },
     {
       id: 13,
@@ -137,7 +137,7 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numLavage: 2,
-      proprietaire: "Ketaka Andriamahenina"
+      proprietaire: "Ketaka Andriamahenina",
     },
     {
       id: 14,
@@ -147,7 +147,7 @@ export function App() {
       dateSortie: "2025-09-11 07:00",
       statut: "terminé",
       numPark: 0,
-      proprietaire: "Sitraka Raharimalala"
+      proprietaire: "Sitraka Raharimalala",
     },
     {
       id: 15,
@@ -157,11 +157,11 @@ export function App() {
       dateSortie: null,
       statut: "en cours",
       numPark: 10,
-      proprietaire: "Tahina Andriantsoa"
-    }
-  ])
-  
-  function AjouterVoiture(id,plaque,serv,dateE,numPark,proprietaire) {
+      proprietaire: "Tahina Andriantsoa",
+    },
+  ]);
+
+  function AjouterVoiture(id, plaque, serv, dateE, numPark, proprietaire) {
     setVoitures([
       ...voitures, // on garde toutes les voitures actuelles
       {
@@ -172,38 +172,46 @@ export function App() {
         dateSortie: null,
         statut: "en cours",
         numPark: numPark,
-        proprietaire: proprietaire
-      }
+        proprietaire: proprietaire,
+      },
     ]);
-  }  
-  const [afficher,setAfficher]=useState(false);
-  function cacher(){
-    setAfficher(!afficher)
+  }
+  const [afficher, setAfficher] = useState(false);
+  function cacher() {
+    setAfficher(!afficher);
   }
 
-    return (
-          <VoituresContexte.Provider value={voitures}>
-            <Router>
-              <div className="container">
-                <div className="burger" onClick={cacher}>
-                  <div className={afficher ? "active1" : ""}></div>
-                  <div className={afficher ? "active2" : ""}></div>
-                  <div className={afficher ? "active3" : ""}></div>
-                </div>
+  return (
+    <VoituresContexte.Provider value={voitures}>
+      <Router>
+        <div className="container">
+          <div className="burger" onClick={cacher}>
+            <div className={afficher ? "active1" : ""}></div>
+            <div className={afficher ? "active2" : ""}></div>
+            <div className={afficher ? "active3" : ""}></div>
+          </div>
 
-                {/* Navbar */}
-                <Header afficher={afficher} cacher={cacher} />
+          {/* Navbar */}
+          <Header afficher={afficher} cacher={cacher} />
 
-                {/* Pages */}
-                <Routes>
-                  <Route path="/" element={<Dashboard setVoitures={setVoitures} />} />
-                  <Route path="/parking" element={<Parking voitures={voitures} AjouterVoiture={AjouterVoiture} />} />
-                  {/* <Route path="/lavage" element={<h2 style={{color:"white"}}>🚗 Page Lavage (en construction)</h2>} /> */}
-                </Routes>
-              </div>
-            </Router>
-          </VoituresContexte.Provider>
-
-    );
+          {/* Pages */}
+          <Routes>
+            <Route path="/" element={<Dashboard setVoitures={setVoitures} />} />
+            <Route
+              path="/parking"
+              element={
+                <Parking voitures={voitures} AjouterVoiture={AjouterVoiture} />
+              }
+            />
+            <Route
+              path="/lavage"
+              element={
+                <Lavage voitures={voitures} AjouterVoiture={AjouterVoiture} />
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </VoituresContexte.Provider>
+  );
 }
-

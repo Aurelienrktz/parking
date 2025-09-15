@@ -1,54 +1,53 @@
-import React, { useContext, useEffect, useState } from 'react';
-import s from './tableaux.module.css'
+import React, { useContext, useEffect, useState } from "react";
+import s from "./tableaux.module.css";
 
-const Tableaux = ({voitures,setVoitures}) => {
+const Tableaux = ({ voitures, setVoitures }) => {
+  const [inp, setInp] = useState("");
+  const [resultats, setResultats] = useState(voitures);
 
-    const [inp,setInp]=useState('');
-    const [resultats, setResultats] = useState(voitures);
-
-    useEffect(()=>{
-      if (inp.length >= 4) {
-        setResultats(
-          voitures.filter(
-            (value) =>
-              value.plaque.includes(inp.toUpperCase()) ||
-              value.proprietaire.toUpperCase().includes(inp.toUpperCase())
-          )
-        );
-      } else {
-        // si moins de 4 caractères → on remet toutes les voitures
-        setResultats(voitures);
-      } 
-        
-    },[inp,voitures])
-
-    // function chercher1(){
-    //     if(inp.length>=4){
-    //       setVoitures(voitures.filter((value) => value.plaque.includes(inp.toUpperCase()) || value.proprietaire.toUpperCase().includes(inp.toUpperCase()) ))
-    //     }else{
-    //       setVoitures(voitures)
-    //     }
-    // }
-    
-    function chercher2(e) {
-      e.preventDefault();
+  useEffect(() => {
+    if (inp.length >= 4) {
       setResultats(
-        voitures.filter((value) =>
-          value.plaque.includes(inp.toUpperCase())
+        voitures.filter(
+          (value) =>
+            value.plaque.includes(inp.toUpperCase()) ||
+            value.proprietaire.toUpperCase().includes(inp.toUpperCase())
         )
       );
+    } else {
+      // si moins de 4 caractères → on remet toutes les voitures
+      setResultats(voitures);
     }
+  }, [inp, voitures]);
 
-    return (
-      <div className={s.container}>
-        <form action="">
-          <div>
-            <label htmlFor="">
-              <input placeholder='Entrer une immatriculation...' type="text" onChange={(e) => setInp(e.target.value)} />
-              <img src="/image/search.png" alt="icon de recherche" onClick={(e) =>chercher2(e)}/>
-            </label>
-          </div>
-        </form>
+  function chercher2(e) {
+    e.preventDefault();
+    setResultats(
+      voitures.filter((value) => value.plaque.includes(inp.toUpperCase()))
+    );
+  }
+
+  return (
+    <div className={s.container}>
+      <form action="">
+        <div>
+          <label htmlFor="">
+            <input
+              placeholder="Rechercher..."
+              type="text"
+              onChange={(e) => setInp(e.target.value)}
+            />
+            <img
+              src="/image/search.png"
+              alt="icon de recherche"
+              onClick={(e) => chercher2(e)}
+            />
+          </label>
+        </div>
+      </form>
+      {resultats.length == 0 ? (
+        <h1>Aucun resultat</h1>
+      ) : (
         <table>
           <thead>
             <tr>
@@ -81,8 +80,9 @@ const Tableaux = ({voitures,setVoitures}) => {
             })}
           </tbody>
         </table>
-      </div>
-    );
-}
+      )}
+    </div>
+  );
+};
 
 export default Tableaux;

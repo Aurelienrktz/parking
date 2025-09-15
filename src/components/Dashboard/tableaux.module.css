@@ -1,73 +1,72 @@
-.container{
-    margin: 0 10px;
+.container {
+  margin: 0 10px;
 }
-.container form div{
-    height: 30px;
-    padding: 5px;
-    margin-bottom: 40px;
+.container form div {
+  height: 30px;
+  padding: 5px;
+  margin-bottom: 40px;
 }
-.container form label{
-    border-radius: 10px;
-    width: 80%;
-    display: block;
-    position: relative;
-    background-color: #fff;
-    margin: 0 auto;
-    height: 30px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
+.container form label {
+  border-radius: 10px;
+  width: 80%;
+  display: block;
+  position: relative;
+  background-color: #fff;
+  margin: 0 auto;
+  height: 30px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
-.container form input{
+.container form input {
+  margin: 0;
+  border: none;
+  width: 80%;
+  border-radius: 10px;
+  padding: 5px;
+}
+.container form input:focus {
+  border: none;
+  outline: none; /* supprime le contour par défaut */
+}
+
+.container form img {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+}
+.container table {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 10px;
+  width: 90%;
+  font-size: 0.6rem;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: none;
+  border-collapse: collapse;
+}
+.container table td {
+  border-right: none;
+  padding: 10px;
+}
+
+@media (min-width: 576px) {
+  .container table {
+    padding: 20px;
+    /* width: 75%; */
+    font-size: 1.1rem;
+    text-align: center;
     margin: 0;
-    border: none;
-    width: 80%;
-    border-radius: 10px;
-    padding: 5px;
-}
-.container form input:focus{
-    border: none;
-}
-.container form img{
-    position: absolute;
-    top: 2px; 
-    right: 5px;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-}
-.container table{
-    background-color: rgba(255, 255, 255, 0.6);
-    padding: 10px;
-    width: 90%;
-    font-size: 0.6rem;
-    margin: 0 auto;
-    border-radius: 10px;
-    border: none;
-    border-collapse: collapse;
-    
-}
-.container table td{
-    border-right: none;
-    padding: 10px;
-
-}
-
-
-@media (min-width:768px) {
-    .container table{
-        padding: 20px;
-        width: 75%;
-        font-size: 1.1rem;
-        text-align: center;
-        margin: 0;
-    }
-    .container form label {
-        width:25%;
-        margin: 0;
-        height: 45px;
-    }
-    .container form img{
-        top: 10px;
-    }
+  }
+  .container form label {
+    width: 25%;
+    margin: 0;
+    height: 45px;
+  }
+  .container form img {
+    top: 10px;
+  }
 }
