@@ -52,6 +52,10 @@
   border-right: none;
   padding: 10px;
 }
+.container table td img {
+  width: 25px;
+  height: 25px;
+}
 
 @media (min-width: 576px) {
   .container table {

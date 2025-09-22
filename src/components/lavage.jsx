@@ -1,110 +1,52 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AfficherBar, VoituresContexte } from "../MyContexte";
+import React, { useState } from "react";
 import Information from "./Parking/information";
 import Formulaire from "./Parking/formulaire";
 import s from "./styles/parking.module.css";
 
-const Lavage = ({ AjouterVoiture, voitures }) => {
-  const [lavage, setLavage] = useState([
-    {
-      num: 1,
-      voiture: "",
-      proprietaire: "",
-    },
-    {
-      num: 2,
-      voiture: "",
-      proprietaire: "",
-    },
-    {
-      num: 3,
-      voiture: "",
-      proprietaire: "",
-    },
-    {
-      num: 4,
-      voiture: "",
-      proprietaire: "",
-    },
-    {
-      num: 5,
-      voiture: "",
-      proprietaire: "",
-    },
-    {
-      num: 6,
-      voiture: "",
-      proprietaire: "",
-    },
-  ]);
-
-  function Liberer(id) {
-    setLavage((prev) => {
-      const nouveau = prev.map((value) => {
-        return value.num === id
-          ? { ...value, voiture: "", proprietaire: "" }
-          : value;
-      });
-      return nouveau;
-    });
-  }
-
+const Lavage = ({
+  AjouterVoiture2,
+  voitures,
+  lavage,
+  setLavage,
+  voitureLavage,
+  setVoitureLavage,
+  setVoitures,
+}) => {
+  const [selectedNum, setSelectedNum] = useState(null);
+  const [activeForm, setActiveForm] = useState(null);
   const [voitureAff, setVoitureAff] = useState({
     num: 0,
     proprietaire: "",
     voiture: "",
   });
-  const [ind, setInd] = useState(0);
-  const [info, setInfo] = useState(false);
-  const [form, setForm] = useState(false);
 
-  function AfficheInfo(num, nom, prop) {
-    if (!info) {
-      setInfo(true);
-    }
-    if (form) {
-      setForm(false);
-    }
-    setVoitureAff({
-      num: num,
-      proprietaire: prop,
-      voiture: nom,
-    });
-  }
-  function Afficheform(indX) {
-    if (!form) {
-      setForm(true);
-    }
-    if (info) {
-      setInfo(false);
-    }
-    setInd(indX);
-  }
-
-  useEffect(() => {
-    handleParking();
-  }, [voitures]); // ajouter parking si nécessaire pour la comparaison
-
-  function handleParking() {
-    const ListeParking = voitures.filter(
-      (value) => value.service === "Lavage" && value.statut === "en cours"
+  function Liberer(numLavage) {
+    setVoitureLavage(voitureLavage.filter((v) => v.numLavage !== numLavage));
+    setLavage(
+      lavage.map((p) =>
+        p.num === numLavage ? { ...p, voiture: "", proprietaire: "" } : p
+      )
     );
-    const newParking = lavage.map((p) => {
-      const voitureOccupee = ListeParking.find((v) => v.numLavage === p.num);
-      return {
-        ...p,
-        voiture: voitureOccupee ? voitureOccupee.plaque : "",
-        proprietaire: voitureOccupee ? voitureOccupee.proprietaire : "",
-      };
-    });
-
-    // Vérifie si le tableau a réellement changé
-
-    const isEqual = newParking.every((p, i) => p.voiture === lavage[i].voiture);
-
-    if (!isEqual) {
-      setLavage(newParking);
+    setVoitures(
+      voitures.map((v) =>
+        v.numLavage === numLavage ? { ...v, statut: "terminé" } : v
+      )
+    );
+    if (activeForm === "info" && selectedNum === numLavage) {
+      setActiveForm(null);
+      setSelectedNum(null);
     }
+  }
+
+  function showInfo(num, voiture, proprietaire) {
+    setSelectedNum(num);
+    setActiveForm("info");
+    setVoitureAff({ num, voiture, proprietaire });
+  }
+
+  function showForm(num) {
+    setSelectedNum(num);
+    setActiveForm("form");
   }
 
   return (
@@ -112,43 +54,43 @@ const Lavage = ({ AjouterVoiture, voitures }) => {
       <img src="/image/Car wash-bro.png" alt="" />
       <h1>Gestion de Lavage</h1>
       <div className={s.parkinC}>
-        {lavage.map((value, index) => {
-          return (
-            <div
-              key={index}
-              style={{
-                backgroundColor: value.voiture === "" ? "#25ff37" : "#ff2525",
-              }}
+        {lavage.map((value) => (
+          <div
+            key={value.num}
+            style={{
+              backgroundColor: value.voiture === "" ? "#25ff37" : "#ff2525",
+            }}
+          >
+            <h1>N°{value.num}</h1>
+            <h6>{value.voiture === "" ? "Vide" : value.voiture}</h6>
+            <button
+              onClick={() => showForm(value.num)} // ok
+              style={{ display: value.voiture === "" ? "block" : "none" }}
             >
-              <h1>N°{value.num}</h1>
-              <h6>{value.voiture === "" ? "Vide" : value.voiture}</h6>
-              <button
-                onClick={() => Afficheform(value.num)}
-                style={{ display: value.voiture !== "" ? "none" : "block" }}
-              >
-                Ajouter
-              </button>
-              <button
-                onClick={() =>
-                  AfficheInfo(value.num, value.voiture, value.proprietaire)
-                }
-                style={{ display: value.voiture !== "" ? "block" : "none" }}
-              >
-                Voir
-              </button>
-            </div>
-          );
-        })}
+              Ajouter
+            </button>
+
+            <button
+              onClick={() =>
+                showInfo(value.num, value.voiture, value.proprietaire)
+              }
+              style={{ display: value.voiture !== "" ? "block" : "none" }}
+            >
+              Voir
+            </button>
+          </div>
+        ))}
       </div>
-      {info === true && (
+
+      {activeForm === "info" && selectedNum === voitureAff.num && (
         <Information voitureAff={voitureAff} Liberer={Liberer} />
       )}
-      {form === true && (
+      {activeForm === "form" && (
         <Formulaire
-          parking={lavage}
-          voitures={voitures}
-          numero={ind}
-          AjouterVoiture={AjouterVoiture}
+          numero={selectedNum} // numéro exact de la place
+          AjouterVoiture={(plaque, date, proprietaire) =>
+            AjouterVoiture2(plaque, "Lavage", date, selectedNum, proprietaire)
+          }
         />
       )}
     </div>

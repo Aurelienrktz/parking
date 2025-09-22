@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./tableaux.module.css";
 
 const Tableaux = ({ voitures, setVoitures }) => {
@@ -15,7 +15,6 @@ const Tableaux = ({ voitures, setVoitures }) => {
         )
       );
     } else {
-      // si moins de 4 caractères → on remet toutes les voitures
       setResultats(voitures);
     }
   }, [inp, voitures]);
@@ -24,6 +23,18 @@ const Tableaux = ({ voitures, setVoitures }) => {
     e.preventDefault();
     setResultats(
       voitures.filter((value) => value.plaque.includes(inp.toUpperCase()))
+    );
+  }
+
+  function supprimerVoiture(id) {
+    if (window.confirm("Voulez-vous vraiment supprimer cette voiture ?")) {
+      setVoitures(voitures.filter((v) => v.id !== id));
+    }
+  }
+
+  function modifierVoiture(voiture) {
+    alert(
+      `Modifier la voiture ${voiture.plaque} (${voiture.proprietaire})\nÀ remplacer par un vrai formulaire de modification`
     );
   }
 
@@ -45,39 +56,46 @@ const Tableaux = ({ voitures, setVoitures }) => {
           </label>
         </div>
       </form>
-      {resultats.length == 0 ? (
-        <h1>Aucun resultat</h1>
+      {resultats.length === 0 ? (
+        <h1>Aucun résultat</h1>
       ) : (
         <table>
           <thead>
             <tr>
               <th>Id</th>
-              <th>Immatricuation</th>
+              <th>Immatriculation</th>
               <th>Nom</th>
               <th>Service</th>
-              <th>Numero</th>
               <th>Date d'entrée</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {resultats.map((value, index) => {
-              return (
-                <tr
-                  key={index}
-                  style={{
-                    backgroundColor:
-                      value.statut === "en cours" ? "#6fe979b0" : "",
-                  }}
-                >
-                  <td>{value.id}</td>
-                  <td>{value.plaque}</td>
-                  <td>{value.proprietaire}</td>
-                  <td>{value.service}</td>
-                  <td>{value.numPark}</td>
-                  <td>{value.dateEntree}</td>
-                </tr>
-              );
-            })}
+            {resultats.map((value) => (
+              <tr
+                key={value.id}
+                style={{
+                  backgroundColor:
+                    value.statut === "en cours" ? "#6fe979b0" : "",
+                }}
+              >
+                <td>{value.id}</td>
+                <td>{value.plaque}</td>
+                <td>{value.proprietaire}</td>
+                <td>{value.service}</td>
+                <td>{value.dateEntree}</td>
+                <td>
+                  {/* <button onClick={() => modifierVoiture(value)}>
+                    Modifier
+                  </button> */}
+                  <img className="img" src="/image/pen.png" alt="" />
+                  <img className="img" src="/image/bin.png" alt="" />
+                  {/* <button onClick={() => supprimerVoiture(value.id)}>
+                    Supprimer
+                  </button> */}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       )}
