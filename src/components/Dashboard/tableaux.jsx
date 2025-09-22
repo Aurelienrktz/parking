@@ -5,6 +5,12 @@ const Tableaux = ({ voitures, setVoitures }) => {
   const [inp, setInp] = useState("");
   const [resultats, setResultats] = useState(voitures);
 
+  // Pour le modal de modification
+  const [modalVisible, setModalVisible] = useState(false);
+  const [voitureAModifier, setVoitureAModifier] = useState(null);
+  const [nouveauNom, setNouveauNom] = useState("");
+  const [nouvellePlaque, setNouvellePlaque] = useState("");
+
   useEffect(() => {
     if (inp.length >= 4) {
       setResultats(
@@ -32,15 +38,33 @@ const Tableaux = ({ voitures, setVoitures }) => {
     }
   }
 
-  function modifierVoiture(voiture) {
-    alert(
-      `Modifier la voiture ${voiture.plaque} (${voiture.proprietaire})\nÀ remplacer par un vrai formulaire de modification`
+  function ouvrirModal(voiture) {
+    setVoitureAModifier(voiture);
+    setNouveauNom(voiture.proprietaire);
+    setNouvellePlaque(voiture.plaque);
+    setModalVisible(true);
+  }
+
+  function validerModification() {
+    setVoitures(
+      voitures.map((v) =>
+        v.id === voitureAModifier.id
+          ? { ...v, proprietaire: nouveauNom, plaque: nouvellePlaque }
+          : v
+      )
     );
+    setModalVisible(false);
+    setVoitureAModifier(null);
+  }
+
+  function fermerModal() {
+    setModalVisible(false);
+    setVoitureAModifier(null);
   }
 
   return (
     <div className={s.container}>
-      <form action="">
+      <form>
         <div>
           <label htmlFor="">
             <input
@@ -56,6 +80,7 @@ const Tableaux = ({ voitures, setVoitures }) => {
           </label>
         </div>
       </form>
+
       {resultats.length === 0 ? (
         <h1>Aucun résultat</h1>
       ) : (
@@ -85,19 +110,50 @@ const Tableaux = ({ voitures, setVoitures }) => {
                 <td>{value.service}</td>
                 <td>{value.dateEntree}</td>
                 <td>
-                  {/* <button onClick={() => modifierVoiture(value)}>
-                    Modifier
-                  </button> */}
-                  <img className="img" src="/image/pen.png" alt="" />
-                  <img className="img" src="/image/bin.png" alt="" />
-                  {/* <button onClick={() => supprimerVoiture(value.id)}>
-                    Supprimer
-                  </button> */}
+                  <img
+                    className="img"
+                    src="/image/pen.png"
+                    alt="Modifier"
+                    onClick={() => ouvrirModal(value)}
+                    style={{ cursor: "pointer", marginRight: "10px" }}
+                  />
+                  <img
+                    className="img"
+                    src="/image/bin.png"
+                    alt="Supprimer"
+                    onClick={() => supprimerVoiture(value.id)}
+                    style={{ cursor: "pointer" }}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* Modal pour modifier */}
+      {modalVisible && (
+        <div className={s.modal}>
+          <div className={s.modalContent}>
+            <h2>Modifier la voiture</h2>
+            <label>Nom du propriétaire :</label>
+            <input
+              type="text"
+              value={nouveauNom}
+              onChange={(e) => setNouveauNom(e.target.value)}
+            />
+            <label>Immatriculation :</label>
+            <input
+              type="text"
+              value={nouvellePlaque}
+              onChange={(e) => setNouvellePlaque(e.target.value)}
+            />
+            <div className={s.modalButtons}>
+              <button onClick={validerModification}>Valider</button>
+              <button onClick={fermerModal}>Annuler</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
