@@ -1,28 +1,46 @@
-import React, { useContext, useEffect } from "react";
-import Header from "./Dashboard/header";
-import Chart from "./Dashboard/chart";
-import Tableaux from "./Dashboard/tableaux";
-import { VoituresContexte } from "../MyContexte";
-import s from "./styles/dashboard.module.css";
+import { Link } from "react-router-dom";
+import s from "./styles/header.module.css";
+import { useNavigate } from "react-router-dom";
 
-const Dashboard = ({ setAfficher2, afficher, setVoitures }) => {
-  const Listevoiture = useContext(VoituresContexte);
+const Header = ({ afficher, cacher }) => {
+  const navigate = useNavigate();
+    const handleLogout = () => {
+    // Redirection vers login
+    navigate("/connexion");
+  }
   return (
-    <div className={s.container}>
-      <Header
-        voitures={Listevoiture}
-        afficher={afficher}
-        setAfficher2={setAfficher2}
-      />
+    <div className={s.header} style={{ left: afficher ? "0px" : "-300px" }}>
       <img
-        className={s.illustration}
-        src="/image/Visual data-pana.png"
-        alt="illustration dashboard"
+        src="/image/street paid parking-rafiki.png"
+        alt="illustration parking"
       />
-      <Chart voitures={Listevoiture} />
-      <Tableaux voitures={Listevoiture} setVoitures={setVoitures} />
+      <div className={s.navbar}>
+        <div>
+          <img src="/image/dashboard (5).png" alt="Logo dashboard" />
+          <Link onClick={cacher} to="/">
+            Dashboard
+          </Link>
+        </div>
+        <div>
+          <img src="/image/parking-area (1).png" alt="Logo parking" />
+          <Link onClick={cacher} to="/parking">
+            Parking
+          </Link>
+        </div>
+        <div>
+          <img src="/image/car-wash (1).png" alt="Logo lavage" />
+          <Link onClick={cacher} to="/lavage">
+            Lavage
+          </Link>
+        </div>
+        <button className={s.logoutButton}
+          onClick={handleLogout}
+        >
+          Déconnexion
+        </button>
+      </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Header;
