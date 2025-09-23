@@ -34,11 +34,12 @@ const Inscription = () => {
       // Redirection après succès
       navigate("/connexion");
     } catch (err) {
-      console.error("❌ Erreur inscription :", err);
-      setError(err.response?.data?.message || "Erreur lors de l'inscription");
-        console.error("❌ Erreur inscription :", err.response?.data);
-        setError(err.response?.data || "Erreur lors de l'inscription");
-
+      //console.error("❌ Erreur inscription :", err);
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data.error.password[0] ||
+        "Erreur lors de l'inscription";
+      setError(msg);
     }
   }
 
