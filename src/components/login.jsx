@@ -41,9 +41,7 @@ async function handleLogin(e) {
     // Gestion sécurisée des erreurs
     console.error("❌ Erreur connexion :", err.response?.data || err.message);
     setError(
-      err.response?.data?.message ||
-        err.message ||
-        "Email ou mot de passe incorrect"
+      "Email ou mot de passe incorrect"
     );
   }
 }
