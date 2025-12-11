@@ -102,7 +102,7 @@ export function App() {
             <div className={afficher ? "active2" : ""}></div>
             <div className={afficher ? "active3" : ""}></div>
           </div>
-          <Header afficher={afficher} cacher={cacher} />;
+          <Header afficher={afficher} cacher={cacher} />
           <Routes>
             <Route
               path="/connexion"
@@ -113,41 +113,41 @@ export function App() {
             <Route
               path="/"
               element={
-                <PrivateRoute>
-                  <Dashboard setVoitures={setVoitures} />
-                </PrivateRoute>
+                // <PrivateRoute>
+                <Dashboard voitures={voitures} setVoitures={setVoitures} />
+                // </PrivateRoute>
               }
             />
             <Route
               path="/parking"
               element={
-                <PrivateRoute>
-                  <Parking
-                    voitures={voitures}
-                    AjouterVoiture={AjouterVoiture}
-                    parking={parking}
-                    setParking={setParking}
-                    voitureParking={voitureParking}
-                    setVoitureParking={setVoitureParking}
-                    setVoitures={setVoitures}
-                  />
-                </PrivateRoute>
+                // <PrivateRoute>
+                <Parking
+                  voitures={voitures}
+                  AjouterVoiture={AjouterVoiture}
+                  parking={parking}
+                  setParking={setParking}
+                  voitureParking={voitureParking}
+                  setVoitureParking={setVoitureParking}
+                  setVoitures={setVoitures}
+                />
+                // </PrivateRoute>
               }
             />
             <Route
               path="/lavage"
               element={
-                <PrivateRoute>
-                  <Lavage
-                    AjouterVoiture2={AjouterVoiture2}
-                    voitures={voitures}
-                    setVoitures={setVoitures}
-                    lavage={lavage}
-                    setLavage={setLavage}
-                    voitureLavage={voitureLavage}
-                    setVoitureLavage={setVoitureLavage}
-                  />
-                </PrivateRoute>
+                // <PrivateRoute>
+                <Lavage
+                  AjouterVoiture2={AjouterVoiture2}
+                  voitures={voitures}
+                  setVoitures={setVoitures}
+                  lavage={lavage}
+                  setLavage={setLavage}
+                  voitureLavage={voitureLavage}
+                  setVoitureLavage={setVoitureLavage}
+                />
+                // </PrivateRoute>
               }
             />
           </Routes>
